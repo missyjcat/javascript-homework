@@ -1,0 +1,377 @@
+/* Include Google's webfonts */
+@import url(http://fonts.googleapis.com/css?family=Playfair+Display:400,400italic|Muli:300,400,300italic,400italic); 
+
+/* Global Styles*/
+
+html,body {
+    font-family:'Muli',sans-serif;
+    
+    background-color:#f3f4e5;
+}
+
+html {
+    font-size:16px;
+}
+
+header {
+    width:90%; /* 940px */
+    margin:0 auto;
+    
+    background-color:#e2e3d9;
+}
+
+    nav ul {
+
+        padding:30px;
+        margin:30px;
+        
+        text-align:center;
+    }
+    
+    nav li {
+        display:inline;
+        
+        width:12.5%;
+        padding:2.5%;
+        
+        text-align:center;
+        font-size:1.5em;
+        color:#59554e;
+    }
+    
+        nav li.active {
+            font-weight:800;
+        }
+    
+        nav li a {
+            font-weight:100;
+            color:#59554e;
+        }
+
+h1 {
+    clear:both;
+
+    text-align:center;
+    font-family:'Playfair Display',serif;
+    color:#a1c1be;
+    font-size:3em;
+}
+
+h2 {
+    margin: .75% 0;
+
+    font-size:2em;
+    text-align:center;
+}
+
+article {
+    width:85%;
+    margin:30px auto;
+}
+
+    .hide-start {
+        padding:1.25%;
+        margin:1.25%;
+        
+        background-color:#E2E3D9;
+    }
+
+form {
+    text-align:center;
+}
+
+label {
+    display:block;
+    margin-top:8px;
+}
+
+input {
+    text-align:right;
+}
+
+.buttons {
+    margin:15px 0;
+}
+
+.value
+{
+    text-align:right;
+}
+
+.center {
+    text-align: center;
+}
+
+strong {
+    font-weight: 800;
+}
+
+
+/* HW 2 Styles */
+
+p.date {
+    margin:.75%;
+    
+    text-align:center;
+    font-size:1.1em;
+    text-transform:uppercase;
+}
+
+p.red {
+    color:red;
+}
+
+p.blue {
+    color:blue;
+}
+
+table {
+    width:70%;
+    margin:30px auto;
+}
+
+    .bodyrow td {
+        padding:1.25% .8% 1.25% 0;
+        
+        color:#698582;
+        font-size:1.15em;
+    }
+    
+    .header td {
+        padding: .8% 1.25% .8% 0;
+
+        font-size:.8em;
+        text-transform:uppercase;
+        border-bottom:1px solid #59554e;
+    }
+    
+#result, #result_count {
+    width:30%;
+    height:140px;
+    
+    vertical-align:top;
+    text-align:left;
+}
+
+#instruct_click, #instructions {    
+    text-align:center;
+    font-size:.9em;
+}
+
+#instructions {
+    margin: 7px 0 15px 0;
+}
+
+
+/* HW 3 Styles */
+
+.part h1 {
+    font-family: Muli, sans-serif;
+    font-size: 1.5em;
+    text-transform: uppercase;
+    font-weight: 400;
+    color: #000;
+    text-align: center;
+    
+    padding: 20px 0;
+}
+
+.part h2.show-hide-instructions {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1em;
+    font-weight: 100;
+    color: #D327A9;
+    
+    margin: 5px;
+}
+
+.part .hide-start {
+    margin: 0;
+}
+
+.part .error {
+    border: 1px solid #FF0000;
+    background-color: #F1D9D9;
+    width: 75%;
+    padding: 10px;
+    margin: 10px auto;
+    
+    font-weight: 800;
+    text-align: center;
+    
+}
+
+.part #instructions {
+    width: 70%;
+    margin: 0 auto;
+}
+
+#final-average {
+    padding-top: 10px;
+}
+
+#final-average label, #final-grade label {
+    text-transform: uppercase;
+}
+
+.disabled {
+    background-color: #EAEBE3;
+}
+
+.total .label {
+    text-align: right;
+    text-transform: uppercase;
+}
+
+.total {
+    font-weight: 800;
+}
+
+#credit_result {
+    width: 60%;
+    height: 80px;
+    padding: 10px;
+    text-align: left;
+    vertical-align: top;
+}
+
+.red {
+    color: #FF0000;
+}
+
+#part-6 {
+    margin-bottom: 100px;
+    min-height: 450px;
+}
+
+#part-6 p, #part-7 p {
+    text-align:center;
+    margin: 10px auto;
+    width: 400px;
+}
+
+#stats-box h1 {
+    font-size: .9em;
+    font-weight: 100;
+}
+
+#current-stats {
+    font-weight: 800;
+}
+
+#start-game {
+    background-color: #C1E4E1;
+    width: 70%;
+    margin: 10px auto;
+}
+
+#question-box {
+    font-size: 3em;
+    font-family: 'Playfair Display', serif;
+    color: #D327A9;
+}
+
+#question-box .gamelink {
+    color: #31746E;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+#amirite {
+    font-size: 2em;
+}
+
+#part-7 {
+    min-height: 800px;
+}
+
+/* HW 4 styling */
+
+ul {
+    list-style-type: disc;
+    padding-left: 40px;
+}
+
+ol {
+    list-style-type: decimal;
+    padding-left: 40px;
+}
+
+.square {
+    list-style-type: square;
+}
+
+.upper-roman {
+    list-style-type: upper-alpha;
+}
+
+#list_output {
+    text-align: left;
+}
+
+#list_header {
+    font-size: 1.2em;
+    font-weight: 800;
+    text-align: left;
+}
+
+#gift {
+    width: 80px;
+}
+
+#giftbox {
+    text-align: center;
+}
+
+/* HW 5 Styling */
+
+input {
+    margin: 10px;
+}
+
+.hw-part-5 p {
+    text-align: center;
+}
+
+.hw-part-5 label {
+    font-weight: 700;
+}
+
+#part-2 input {
+    text-align: center;
+}
+
+#form_2_fieldset2 input {
+    text-transform: capitalize;
+    text-align: center;
+}
+
+#form_2_fieldset2 #state_abbrev_textfield {
+    text-transform: uppercase;
+}
+
+#form_3_fieldset3 label, #form_3_fieldset2 label {
+    display: inline;
+    padding-right: 20px;
+}
+
+#form_3_submit {
+    display: none;
+}
+
+.part p {
+    text-align: center;
+}
+
+/* Footer */
+
+    
+footer {
+    width:70%;
+    border-top:#e2e3d9 solid 1px;
+    padding:1.25%;
+    margin:20px auto;
+    
+    text-align:right;
+}
+

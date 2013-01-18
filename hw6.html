@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>CNIT 133 - Homework 6: Javascript: Objects</title>
+
+<link rel="stylesheet" href="reset.css" type="text/css" />
+<link rel="stylesheet" href="style.css" type="text/css" />
+
+<!--[if IE]>
+<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+
+<!-- Initialize JQuery -->
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js"></script>
+
+<script>
+// Wait for the document to load before running these scripts
+$(document).ready(function() {
+   
+   // Start with each part's DIV hidden
+   $('.hide-start').hide();   
+   
+   // Make the cursor turn into a pointer when hing  H2
+   $('h2').css('cursor','pointer');
+   
+   // When the user clicks on an H2, script finds the 'next' div with .hide-start
+   // class and shows or hides it (selects only the div under the H2) 
+   $('h2').click(function() {
+        $(this).next('.hide-start').slideToggle('slow');    
+   });   
+   
+}); // end document.ready javascripts
+
+</script>
+
+</head>
+<body>
+<header>
+    <nav>
+        <ul>
+            <li><a href="index.html">HW1</a></li>
+            <li><a href="hw2.html">HW2</a></li>
+            <li><a href="hw3.html">HW3</a></li>
+            <li><a href="hw4.html">HW4</a></li>
+            <li><a href="hw5.html">HW5</a></li>
+            <li class="active">HW6</li>
+            <li><a href="hw7.html">HW7</a></li>
+            <li><a href="hw8.html">HW8</a></li>
+        </ul>
+    </nav>
+</header>
+
+<section id="body">
+    <h1>CNIT 133 Homework 6 - Objects</h1>
+    <article>
+        <h2>Part 1</h2>
+        <div id="part-1" class="hide-start part">
+            <h1>The Math method "floor"</h1>
+            <p>Enter a number and press submit to round that number in the indicated method.</p>
+            <form id="math-round-form">
+                <table id="math-round-table">
+                    <tr class="header">
+                        <td>Rounding method</td>
+                        <td>Input number</td>
+                        <td>Rounded number</td>
+                    </tr>
+                    <tr class="bodyrow">
+                        <td>Round to integer</td>
+                        <td><input type="text" name="to-integer-field" id="to-integer-field" /></td>
+                        <td><input type="text" name="rounded-integer-field" id="rounded-integer-field" class="disabled" disabled /></td>
+                    </tr>
+                    <tr class="bodyrow">
+                        <td>Round to tenths</td>
+                        <td><input type="text" name="to-tenths-field" id="to-tenths-field" /></td>
+                        <td><input type="text" name="rounded-integer-field" id="rounded-integer-field" class="disabled" disabled /></td>
+                    </tr>
+                    <tr class="bodyrow">
+                        <td>Round to hundredths</td>
+                        <td><input type="text" name="to-hundredths-field" id="to-hundredths-field" /></td>
+                        <td><input type="text" name="rounded-hundredths-field" id="rounded-hundredths-field" class="disabled" disabled /></td>
+                    </tr>
+                    <tr class="bodyrow">
+                        <td>Round to thousandths</td>
+                        <td><input type="text" name="to-thousandths-field" id="to-thousandths-field" /></td>
+                        <td><input type="text" name="rounded-thousandths-field" id="rounded-thousandths-field" class="disabled" disabled /></td>
+                    </tr>
+                </table>
+            </form>
+        </div>
+        <h2>Part 2</h2>
+        <div id="part-2" class="hide-start part">
+                <h1>Search for a character</h1>
+                <p>Enter some text in the text field and then input a letter to search for in the textfield.</p>
+                <form id="search-form">
+                    <div id="search-text-fieldset">
+                        <label>Text to search</label>
+                        <textarea id="search-textarea" name="search-textarea"></textarea>
+                    </div>
+                    <div id="search-letter-fieldset">
+                        <label>Character to find</label>
+                        <input type="text" id="search-letter" name="search-letter" maxlength="1" />
+                    </div>
+                </form>
+        </div>
+    </article>
+
+
+</section>
+
+<footer>
+    <a href="http://validator.w3.org/check?uri=referer"><img src="img/html.png" alt="Validated HTML5" /></a>
+    <a href="http://jigsaw.w3.org/css-validator/check/referer"><img src="img/w3c.png" alt="Validated CSS" /></a>
+</footer>
+
+</body>
+</html>

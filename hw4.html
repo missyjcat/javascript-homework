@@ -1,0 +1,604 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>CNIT 133 - Homework 4: Javascript: Looping Statements</title>
+
+<link rel="stylesheet" href="reset.css" type="text/css" />
+<link rel="stylesheet" href="style.css" type="text/css" />
+
+<!--[if IE]>
+<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+
+<!-- Initialize JQuery -->
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js"></script>
+
+<script>
+// Wait for the document to load before running these scripts
+$(document).ready(function() {
+   
+   // Start with each part's DIV hidden
+   $('.hide-start').hide();
+   
+   // Make the cursor turn into a pointer when hovering over H2
+   $('h2').css('cursor','pointer');
+   
+   /* When the user clicks on an H2, script finds the 'next' div with .hide-start
+    * class and shows or hides it (selects only the div under the H2) */
+   $('h2').click(function() {
+        $(this).next('.hide-start').slideToggle('slow');    
+   });
+   
+   // Part 1a
+   function forEveryThird() {
+        // define and initialize values
+        var sum = 0;
+        var product = 1;
+
+        // for each value, add it to the sum and multiply it by the current product
+        for (i=5; i<=20; i+=3) {
+            sum += i;
+            product = product * i;
+        };
+
+        // display results
+        $('#part-1a-sum').html('<p>The sum of every third integer from 5 to 20 is ' + sum + '</p>');
+        $('#part-1a-product').html('<p>The product of every third integer from 5 to 20 is ' + product + '</p>');
+   }
+   forEveryThird();
+   
+   // Part 1b
+   function whileEveryThird() {
+        var sum = 0;
+        var i = 3;
+        var product = 1;
+        while ( i <= 31) {
+            sum += i;
+            product = product * i;            
+            i += 4;
+        };
+        $('#part-1b-sum').html('<p>The sum of every fourth integer from 3 to 31 is ' + sum + '</p>');
+
+        $('#part-1b-product').html('<p>The product of every fourth integer from 3 to 31 is ' + product + '</p>');
+
+   }
+   whileEveryThird();
+
+      // The Twelve Days of Chrsitmas script
+function twelve_days() {
+    
+    // define the day variable
+    var nthDay = 0;
+    var nthLyrics = 0;
+
+    // run a loop for each of the 12 verses
+    for (i = 1; i <= 12; ++i) {
+
+        // For each day, define the day variable with a switch statement
+        switch(i) {
+            case 1:
+            nthDay = 'first';
+            break;
+            case 2:
+            nthDay = 'second';
+            break;
+            case 3:
+            nthDay = 'third';
+            break;
+            case 4:
+            nthDay = 'fourth';
+            break;
+            case 5:
+            nthDay = 'fifth';
+            break;
+            case 6:
+            nthDay = 'sixth';
+            break;
+            case 7:
+            nthDay = 'seventh';
+            break;
+            case 8:
+            nthDay = 'eighth';
+            break;
+            case 9:
+            nthDay = 'ninth';
+            break;
+            case 10:
+            nthDay = 'tenth';
+            break;
+            case 11:
+            nthDay = 'eleventh';
+            break;
+            case 12:
+            nthDay = 'twelfth';
+            break;
+        }
+
+        // Print the verses using the day variable of the current loop value
+        $('#song_lyrics').append('<p>On the ' + nthDay + ' day of Christmas</p><p>my true love sent to me:</p>');
+
+            // If we're on the first one, which is a special case, print the lyric
+            if (i == 1 ) {
+                $('#song_lyrics').append('<p>A partridge in a pear tree</p>');
+            } else {
+
+            // Otherwise, find out which day we are on and print that lyric, then loop backwards from there and print each previous lyric so that the lyrics go from the current number back to the first lyric
+            for (z = i; z >= 2; --z) {
+                switch (z) {
+                    case 2:
+                    nthLyric = 'Two turtle doves</p><p>And a partridge in a pear tree';
+                    break;
+                    case 3:
+                    nthLyric = 'Three French Hens';
+                    break;
+                    case 4:
+                    nthLyric = 'Four calling birds';
+                    break;
+                    case 5:
+                    nthLyric = 'Five golden rings';
+                    break;
+                    case 6: 
+                    nthLyric = 'Six geese a laying';
+                    break;
+                    case 7:
+                    nthLyric = 'Seven swans a swimming';
+                    break;
+                    case 8:
+                    nthLyric = 'Eight maids a milking';
+                    break;
+                    case 9:
+                    nthLyric = 'Nine ladies dancing';
+                    break;
+                    case 10:
+                    nthLyric = 'Ten lords a leaping';
+                    break;
+                    case 11:
+                    nthLyric = 'Eleven pipers piping';
+                    break;
+                    case 12:
+                    nthLyric = 'Twelve drummers drumming';
+                    break;
+                }
+            $('#song_lyrics').append('<p>' + nthLyric + '</p>');
+            }
+        }
+
+        // For each verse, print a blank line to separate the verses
+        $('#song_lyrics').append('<p>&nbsp;</p>');
+    }
+}
+
+// Run this function
+twelve_days();
+   
+}); // end document.ready javascripts
+
+
+// PART 2
+
+function calculate_gross_earnings() {
+
+// If an error is showing, reset it by hiding it.
+$('#error-part-2').hide();
+
+// Start the for loop that executes statements for each employee (1 through 6)
+for (i=1; i<=6; ++i) {
+
+    // If the Gross Pay field is red, reset it by turning it back to its normal color.
+    $('#employee' + i + '_grosspay').css('background-color', '#EAEBE3');
+
+    // Declare and parse the inputs of hours and rates
+    var eh = parseInt(document.getElementById('employee' + i + '_hours').value, 10);
+    var er = parseInt(document.getElementById('employee' + i + '_rate').value, 10);
+
+    // Check to see if either field has either a negative number or non-number/null
+    if ( isNaN(eh) == true || eh < 0 || isNaN(er) == true || er < 0 ) {
+
+        // Turn that Gross Pay field red and display an error message
+        $('#employee' + i + '_grosspay').css('background-color', '#D59595');
+        $('#error-part-2').html('You need to input a valid number greater than or equal to zero.').show();
+    }
+
+    // If the values are valid, perform the calculations
+    else {
+
+        //declare the gross pay variable
+        var eg = 0;
+
+        // Calculate the pay depending on whether it's normal time or time and a half
+        if (eh > 40) {
+            eg = (er * 40) + ((1.5 * er) * (eh - 40));
+        } 
+        else if (eh <= 40) {
+            eg = (eh * er);
+        }
+
+        // Parse the value to 2 decimal points
+        eg = eg.toFixed(2);
+
+        // Display the value in the Gross Pay field
+        $('#employee' + i + '_grosspay').val('$' + eg);
+        }
+    }
+}
+
+// PART 3
+
+function generate_interest() {
+
+// Run a loop that runs through integers 5 through 10 (for the interest rate tables 5% through 10%)
+    for (i=5; i<=10; ++i) {
+
+        // Generate one header row per table
+        var headerRow = '<tr class="header"><td>Year</td><td>Amount On Deposit</td><td>Interest Rate</td></tr>';
+        
+        // Append header row to the end of the table of the corresponding variable i
+        $('#interest-table-' + i).append(headerRow);
+
+        // Another loop that runs through each year
+        for (y=1; y<=10; ++y) {
+
+            // Defining principal amount p, interest rate r, and amount a
+            var p = 1000;
+            var r = .01 * i;
+            var a = '$' + (p * Math.pow((1+r), y)).toFixed(2); // round to two decimals
+
+            // Generate a body row for each year that has these values
+            var bodyRow = '<tr class="bodyrow"><td>' + y + '</td><td>' + a + '</td><td>' + i + '</td></tr>';
+
+            // Append the body row to the corresponding table
+            $('#interest-table-' + i).append(bodyRow);
+        
+        } // end second for loop
+    
+    } // end first for loop
+
+    $('table tr:nth-child(even)').css('background-color','#EFF0EA');
+
+    // show the hidden div once the above code runs and completes
+    $('#interest-tables').show();
+}
+
+// PART 4
+function calculate_product_sales() {
+
+    // Hide the error if it's showing
+    $('#error-part-3').hide();
+
+    // Define and initialize variables for sales per item and total sales
+    var sales = 0;
+    var totalSales = 0;
+
+    // Begin loop to run against each inputted field
+    for (i = 1; i <= 5; ++i) {
+
+        // Reset the color of the field if it threw an error before
+        $('#quantity_' + i).css('background-color', '#FFF');
+
+        // Define the variable for the user inputted quantity field
+        var input = parseInt(document.getElementById('quantity_' + i).value,10);
+        
+        // Test is the input is a number or greater than or equal to zero
+        if ( isNaN(input) == true || input < 0 ) {
+
+            // If so, throw an error and turn that field red, clear the sales value
+            $('#quantity_' + i).css('background-color', '#D59595');
+            $('#sales_' + i).val('');
+            $('#error-part-3').html('You need to input a valid number greater than or equal to zero.').show();
+        } else {
+
+            // Otherwise, calculate Sales per item based on what i we're on
+            switch(i) {
+                case 1:
+                sales = (input * 2.98);
+                break;
+                case 2:
+                sales = (input * 4.50);
+                break;
+                case 3:
+                sales = (input * 9.98);
+                break;
+                case 4:
+                sales = (input * 4.49);
+                break;
+                case 5:
+                sales = (input * 6.87);
+                break;
+            }
+
+            // Display Sales value in current item's row, rounded to two decimals
+            $('#sales_' + i).val('$' + sales.toFixed(2));
+
+            // Add the Sales value to the total value to be printed later
+            totalSales += sales;
+        }
+    }
+    // Once everything is done, print the total sales value in the last field
+    $('#total_sales').val('$' + totalSales.toFixed(2));
+}
+
+function list_type_go() {
+
+    // Clear the list div to start over
+    $('#list_output').html('');
+    $('#list_header').html('');
+
+    // Hide the error message in case it's showing and turn the field back to its normal color
+    $('#error-part-5').hide();
+    $('#list_type_input').css('background-color', '#FFF');
+
+    // Define the variable and assign to user input
+    var listTypeInput = parseInt(document.getElementById('list_type_input').value,10);
+    var listStart = 0;
+    var listEnd = 0;
+    var listHeader = 0;
+
+    // Check to see if the input is a number and if it's between 1-3
+    if ( listTypeInput < 1 || listTypeInput > 3 || isNaN(listTypeInput) == true) {
+        
+        // If not, throw an error
+        $('#list_type_input').css('background-color', '#D59595');
+        $('#error-part-5').html('You must enter a valid number between 1 and 3.').show();
+    } else {
+
+        // If so, depending on which one, assign each variable a value to be used for ouput
+        switch (listTypeInput) {
+            case 1:
+            listHeader = 'Unordered List';
+            listStart = '<ul class="square">';
+            listEnd = '</ul>';
+            break;
+            case 2:
+            listHeader = 'Ordered Number List';
+            listStart = '<ol>';
+            listEnd = '</ol>';
+            break;
+            case 3:
+            listHeader = 'Ordered Letter List';
+            listStart = '<ol class="upper-roman">';
+            listEnd = '</ol>';
+            break;
+        }
+
+        // Insert the header of the list
+        $('#list_header').html(listHeader);
+
+        // Print the 3 lines of the list items incrementing from 1-3
+        for (i = 1; i <= 3; ++i) {
+            $('#list_output').append('<li>List item ' + i + '</li>');
+        }
+
+        // Wrap the list items with the proper ul or ol depending on which number was selected above
+        $('#list_output').children().wrapAll(listStart + listEnd);
+        
+    }
+}
+
+function gift_box() {
+    $('#gift').attr('src', 'http://vscdn.s3.amazonaws.com/wp-content/uploads/2010/12/five-gold-riings.jpg').animate({
+        width: "400px"}, 600);
+}
+
+</script>
+</head>
+<body>
+<header>
+    <nav>
+        <ul>
+            <li><a href="index.html">HW1</a></li>
+            <li><a href="hw2.html">HW2</a></li>
+            <li><a href="hw3.html">HW3</a></li>
+            <li class="active">HW4</li>
+            <li><a href="hw5.html">HW5</a></li>
+            <li><a href="hw6.html">HW6</a></li>
+            <li><a href="hw7.html">HW7</a></li>
+            <li><a href="hw8.html">HW8</a></li>
+        </ul>
+    </nav>
+</header>
+
+<section id="body">
+    <h1>CNIT 133 Homework 4 - Looping Statements</h1>
+    <article>
+        <h2>Part 1</h2>
+        <div id="part-1" class="hide-start part">
+            <h1>Part 1a Sum</h1>
+            <div id="part-1a-sum">
+                
+            </div>
+            <h1>Part 1a Product</h1>
+            <div id="part-1a-product">
+                
+            </div>
+            <h1>Part 1b Sum</h1>
+            <div id="part-1b-sum">
+                
+            </div>
+            <h1>Part 1b Product</h1>
+            <div id="part-1b-product">
+                
+            </div>
+        </div>
+    </article>
+    <article>
+      <h2>Part 2</h2>
+      <div id="part-2" class="hide-start part">
+        <h1>Employee Gross Pay</h1>
+        <div id="error-part-2" class="hide-start error"></div>
+        <form name="grosspay" id="grosspay">
+            <table id="employee-gross">
+              <tr class="header">
+                <td></td>
+                <td>Hours Worked</td>
+                <td>Hourly Rate</td>
+                <td>Gross Pay</td>
+              </tr>
+              <tr class="bodyrow">
+                <td>Employee 1</td>
+                <td><input type="text" name="employee1_hours" id="employee1_hours" /></td>
+                <td><input type="text" name="employee1_rate" id="employee1_rate" /></td>
+                <td><input type="text" name="employee1_grosspay" id="employee1_grosspay" class="disabled" disabled /></td>
+              </tr>
+              <tr class="bodyrow">
+                <td>Employee 2</td>
+                <td><input type="text" name="employee2_hours" id="employee2_hours" /></td>
+                <td><input type="text" name="employee2_rate" id="employee2_rate" /></td>
+                <td><input type="text" name="employee2_grosspay" id="employee2_grosspay" class="disabled" disabled /></td>
+              </tr>
+              <tr class="bodyrow">
+                <td>Employee 3</td>
+                <td><input type="text" name="employee3_hours" id="employee3_hours" /></td>
+                <td><input type="text" name="employee3_rate" id="employee3_rate" /></td>
+                <td><input type="text" name="employee3_grosspay" id="employee3_grosspay" class="disabled" disabled /></td>
+              </tr>
+              <tr class="bodyrow">
+                <td>Employee 4</td>
+                <td><input type="text" name="employee4_hours" id="employee4_hours" /></td>
+                <td><input type="text" name="employee4_rate" id="employee4_rate" /></td>
+                <td><input type="text" name="employee4_grosspay" id="employee4_grosspay" class="disabled" disabled /></td>
+              </tr>
+              <tr class="bodyrow">
+                <td>Employee 5</td>
+                <td><input type="text" name="employee5_hours" id="employee5_hours" /></td>
+                <td><input type="text" name="employee5_rate" id="employee5_rate" /></td>
+                <td><input type="text" name="employee5_grosspay" id="employee5_grosspay" class="disabled" disabled /></td>
+              </tr>
+              <tr class="bodyrow">
+                <td>Employee 6</td>
+                <td><input type="text" name="employee6_hours" id="employee6_hours" /></td>
+                <td><input type="text" name="employee6_rate" id="employee6_rate" /></td>
+                <td><input type="text" name="employee6_grosspay" id="employee6_grosspay" class="disabled" disabled /></td>
+              </tr>
+            </table>
+            <div class="buttons">
+              <input type="button" value="Calculate Gross Earnings" onclick="calculate_gross_earnings()" />
+              <input type="reset" value="Reset Form" />
+            </div>
+        </form>
+      </div>
+    </article>
+    <article>
+        <h2>Part 3</h2>
+        <div id="part-3" class="hide-start part">
+            <h1>Generating Interest Tables</h1>
+            <p class="center">This script generates an interest table that calculates the compound interest for a Principal of $1000 at interest rates of 5 through 10 percent for years 1 through 10.</p>
+            <form name="generate-interest">
+                <div class="buttons">
+                    <input type="button" value="Generate Interest Tables" onclick="generate_interest()" />
+                </div>
+            </form>
+            <div id="interest-tables" class="hide-start">
+                <table id="interest-table-5">
+                </table>
+                <table id="interest-table-6">
+                </table>
+                <table id="interest-table-7">
+                </table>
+                <table id="interest-table-8">
+                </table>
+                <table id="interest-table-9">
+                </table>
+                <table id="interest-table-10">
+                </table>
+            </div>
+        </div>
+    </article>
+    <article>
+        <h2>Part 4</h2>
+        <div id="part-4" class="hide-start part">
+            <h1>Product Sales</h1>
+            <div id="error-part-3" class="hide-start error"></div>
+            <p class="center">This script accepts inputs for quantities sold for 5 predetermined products and outputs the sales figures.</p>
+            <form name="product_sales">
+                <table id="product_sales_table">
+                    <tr class="header">
+                        <td>Product Number</td>
+                        <td>Quantity</td>
+                        <td>Price</td>
+                        <td>Line Item Sales</td>
+                    </tr>
+                    <tr class="bodyrow">
+                        <td><input type="text" name="product_1" id="product_1" class="disabled" value="1" disabled /></td>
+                        <td><input type="text" name="quantity_1" id="quantity_1" /></td>
+                        <td><p>$2.98</p></td>
+                        <td><input type="text" name="sales_1" id="sales_1" class="disabled" disabled /></td>
+                    </tr>
+                    <tr class="bodyrow">
+                        <td><input type="text" name="product_2" id="product_2" class="disabled" value="2" disabled /></td>
+                        <td><input type="text" name="quantity_2" id="quantity_2" /></td>
+                        <td><p>$4.50</p></td>
+                        <td><input type="text" name="sales_2" id="sales_2" class="disabled" disabled /></td>
+                    </tr>
+                    <tr class="bodyrow">
+                        <td><input type="text" name="product_3" id="product_3" class="disabled" value="3" disabled /></td>
+                        <td><input type="text" name="quantity_3" id="quantity_3" /></td>
+                        <td><p>$9.98</p></td>
+                        <td><input type="text" name="sales_3" id="sales_3" class="disabled" disabled /></td>
+                    </tr>
+                    <tr class="bodyrow">
+                        <td><input type="text" name="product_4" id="product_4" class="disabled" value="4" disabled /></td>
+                        <td><input type="text" name="quantity_4" id="quantity_4" /></td>
+                        <td><p>$4.49</p></td>
+                        <td><input type="text" name="sales_4" id="sales_4" class="disabled" disabled /></td>
+                    </tr>
+                    <tr class="bodyrow">
+                        <td><input type="text" name="product_5" id="product_5" class="disabled" value="5" disabled /></td>
+                        <td><input type="text" name="quantity_5" id="quantity_5" /></td>
+                        <td><p>$6.87</p></td>
+                        <td><input type="text" name="sales_5" id="sales_5" class="disabled" disabled /></td>
+                    </tr>
+                    <tr class="bodyrow">
+                        <td></td>
+                        <td><p><strong>TOTAL SALES</strong></p></td>
+                        <td></td>
+                        <td><input type="text" name="total_sales" id="total_sales" class="disabled" disabled /></td>
+                    </tr>
+                </table>
+                <div class="buttons">
+                  <input type="button" value="Calculate Sales" onclick="calculate_product_sales()" />
+                  <input type="reset" value="Reset Form" />
+                </div>
+            </form>
+        </div>
+    </article>
+    <article>
+        <h2>Part 5</h2>
+        <div id="part-5" class="hide-start part">
+            <h1>List Types</h1>
+            <div id="error-part-5" class="hide-start error"></div>
+            <form name="list_type">
+                <div id="list_type_field">
+                    <label>Choose your list format</label>
+                    <input type="text" maxlength="1" id="list_type_input" name="list_type_input" />
+                </div>
+                <h3 id="list_header"></h3>
+                <div id="list_output">
+                </div>
+                <div class="buttons">
+                <input type="button" value="Show me the list!" onclick="list_type_go()" />
+                </div>
+            </form>
+
+        </div>
+    </article>
+    <article>
+        <h2>Part 6</h2>
+        <div id="part-6" class="hide-start part">
+            <h1>The Twelve Days of Christmas</h1>
+            <div id="song_lyrics"></div>
+            <div id="giftbox">
+                <p><strong>Click the gift to see which gift you got!</strong></p>
+                <img src="http://cp.c-ij.com/en/contents/3200/00304/images/gift-box-f-r_thl.jpg" id="gift" onclick="gift_box()" alt="Check out the gift!" />
+            </div>
+        </div>
+    </article>
+</section>
+
+<footer>
+    <a href="http://validator.w3.org/check?uri=referer"><img src="img/html.png" alt="Validated HTML5" /></a>
+    <a href="http://jigsaw.w3.org/css-validator/check/referer"><img src="img/w3c.png" alt="Validated CSS" /></a>
+</footer>
+
+</body>
+</html>

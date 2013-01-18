@@ -1,0 +1,353 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>CNIT 133 - Homework 2: Javascript: Basic Operations</title>
+
+<link rel="stylesheet" href="reset.css" type="text/css" />
+<link rel="stylesheet" href="style.css" type="text/css" />
+
+<!--[if IE]>
+<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+
+<!-- Initialize JQuery -->
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js"></script>
+
+<script>
+// Wait for the document to load before running these scripts
+$(document).ready(function() {
+   
+   // Start with each part's DIV hidden
+   $('.hide-start').hide();
+   
+   // Make the cursor turn into a pointer when hovering over H2
+   $('h2').css('cursor','pointer');
+   
+   /* When the user clicks on an H2, script finds the 'next' div with .hide-start
+    * class and shows or hides it (selects only the div under the H2) */
+   $('h2').click(function() {
+        $(this).next('.hide-start').slideToggle('slow');    
+   });
+   
+    // Extra Credit: show/hide instructions
+    $("#instructions").hide();
+    $("#instruct_click").css('cursor', 'pointer');
+    $("#instruct_click").click(function() {
+    $("#instructions").toggle();
+    });
+    
+    // Extra Credit: Color the text box of US conversion form when user clicks on it
+    $("#usdollars").focus(function() {
+        $(this).css('background-color','#A1C1BE');  
+    });
+    
+    // Part 4: Display the table for numbers 1-6
+    // Print the header row within table#homework
+    document.getElementById("homework").innerHTML = "<tr class=\"header\"><td>Number</td><td>Square</td>    <td>Cube</td></tr>";
+
+    // Start the variable at 1 and print out the body rows incrementing the variable by 1 until it hit 6
+    var n = 1
+    while ( n <= 6 ) {
+        document.getElementById("homework").innerHTML += ("<tr class=\"bodyrow\"><td>" + n + "</td><td>" + n*n + "</td><td>" + n*n*n + "</td></tr>");
+        n++;
+    }
+ 
+}); // end document.ready javascripts
+
+
+// Part 2
+function compute() {
+
+    // declare all the variables for Part 2
+    var number1, number2, number3, sum, average, product, smallest, largest, result
+
+    // assign the three number variables with the values entered in the form
+    number1 = parseInt(document.getElementById("num1").value);
+    number2 = parseInt(document.getElementById("num2").value);
+    number3 = parseInt(document.getElementById("num3").value);
+
+    // assign the variables with the appropriate operations
+    sum = number1 + number2 + number3;
+    average = sum/3;
+    product = number1 * number2 * number3;
+    smallest = Math.min(number1,number2,number3);
+    largest = Math.max(number1,number2,number3);
+
+    // display the results in the "result" textarea
+    document.getElementById("result").value = ("The sum of your numbers is " + sum + "\n");
+    document.getElementById("result").value += ("The average of your numbers is " + average + "\n");
+    document.getElementById("result").value += ("The product of your numbers is " + product + "\n");
+    document.getElementById("result").value += ("The smallest of your numbers is " + smallest + "\n");
+    document.getElementById("result").value += ("The largest of your numbers is " + largest);
+}
+
+
+// Part 3
+function countme() {
+    
+    // declare all the variables for Part 3
+    var int1, int2, int3, int4, int5, neg_int, pos_int, zero_int
+
+    // assign the 5 number variables with the values entered in the form
+    int1 = parseInt(document.getElementById("int1").value);
+    int2 = parseInt(document.getElementById("int2").value);
+    int3 = parseInt(document.getElementById("int3").value);
+    int4 = parseInt(document.getElementById("int4").value);
+    int5 = parseInt(document.getElementById("int5").value);
+
+    // start the integer variables at 0
+    neg_int = 0;
+    pos_int = 0;
+    zero_int = 0;
+
+    // check each integer to see if it's greater than, equal to, or less than 0 and add the appropriate count to the corresponding variable
+    if (int1 < 0) {
+        neg_int++;
+    }
+    else if (int1 == 0) {
+        zero_int++;
+    }
+    else if (int1 > 0) {
+        pos_int++;
+    }
+
+    if (int2 < 0) {
+        neg_int++;
+    }
+    else if (int2 == 0) {
+        zero_int++;
+    }
+    else if (int2 > 0) {
+        pos_int++;
+    }
+
+    if (int3 < 0) {
+        neg_int++;
+    }
+    else if (int3 == 0) {
+        zero_int++;
+    }
+    else if (int3 > 0) {
+        pos_int++;
+    }
+
+    if (int4 < 0) {
+        neg_int++;
+    }
+    else if (int4 == 0) {
+        zero_int++;
+    }
+    else if (int4 > 0) {
+        pos_int++;
+    }
+    
+    if (int5 < 0) {
+        neg_int++;
+    }
+    else if (int5 == 0) {
+        zero_int++;
+    }
+    else if (int5 > 0) {
+        pos_int++;
+    }
+    
+    // print the value of each integer veriable in the textarea
+    document.getElementById("result_count").value = ("Negative numbers entered: " + neg_int + " \n");
+    document.getElementById("result_count").value += ("Positive numbers entered: " + pos_int + " \n");
+    document.getElementById("result_count").value += ("Zeroes entered: " + zero_int);
+
+} // end function countme()
+
+// Function that fades the results in Part 3
+function fademe() {
+    $("#result_count").fadeTo("slow",0.25);
+}
+
+
+// Part 4: Function to display the table for numbers 7-10
+function sevenTen() {
+
+    // Print the header row within table#homework2
+    document.getElementById("homework2").innerHTML = "<tr class=\"header\"><td>Number</td><td>Square</td>    <td>Cube</td></tr>";
+
+    // Start the variable at 7 and print out the body rows incrementing the variable by 1 until it hit 10
+    var m = 7
+    while ( m <= 10 ) {
+        document.getElementById("homework2").innerHTML += ("<tr class=\"bodyrow\"><td>" + m + "</td><td>" + m*m + "</td><td>" + m*m*m + "</td></tr>");
+        m++;
+    }
+} // end sevenTen() 
+
+
+// Extra Credit: US Dollar Conversion
+function convertme() {
+
+    // Declare all the currency variable
+    var usd, pound, cdn, euro, yen, peso
+
+    // Associate USD variable with user inputted value
+    usd = document.getElementById("usdollars").value;
+
+    // Perform the conversions
+    pound = usd * 0.670605;
+    cdn = usd * 1.03333;
+    euro = usd * 0.81493;
+    yen = usd * 90.2616;
+    peso = usd * 12.5851;
+
+    // Insert the header row within table#conversion_table
+    document.getElementById("convert_table").innerHTML = "<tr class=\"header\"><td>Currency</td><td>Exchange Rate</td><td class=\"value\">Value</td></tr>";
+
+    // Insert the rest of the body rows
+    document.getElementById("convert_table").innerHTML += "<tr class=\"bodyrow\"><td>British Pound</td><td>0.670605</td><td class=\"value\">" + pound.toFixed(2) + "</td></tr>";
+    document.getElementById("convert_table").innerHTML += "<tr class=\"bodyrow\"><td>Canadian Dollar</td><td>1.03333</td><td class=\"value\">" + cdn.toFixed(2) + "</td></tr>";
+    document.getElementById("convert_table").innerHTML += "<tr class=\"bodyrow\"><td>Euro</td><td>0.81493</td><td class=\"value\">" + euro.toFixed(2) + "</td></tr>";
+    document.getElementById("convert_table").innerHTML += "<tr class=\"bodyrow\"><td>Japanese Yen</td><td>90.2616</td><td class=\"value\">" + yen.toFixed(2) + "</td></tr>";
+    document.getElementById("convert_table").innerHTML += "<tr class=\"bodyrow\"><td>Mexican Peso</td><td>12.5851</td><td class=\"value\">" + peso.toFixed(2) + "</td></tr>";
+
+} // end convertme()
+
+</script>
+
+</head>
+<body>
+<header>
+    <nav>
+        <ul>
+            <li><a href="index.html">HW1</a></li>
+            <li class="active">HW2</li>
+            <li><a href="hw3.html">HW3</a></li>
+            <li><a href="hw4.html">HW4</a></li>
+            <li><a href="hw5.html">HW5</a></li>
+            <li><a href="hw6.html">HW6</a></li>
+            <li><a href="hw7.html">HW7</a></li>
+            <li><a href="hw8.html">HW8</a></li>
+        </ul>
+    </nav>
+</header>
+
+<section id="body">
+    <h1>CNIT 133 Homework 2 - Basic Operations</h1>
+    <article>
+        <h2>Part1</h2>
+        <div id="part-1" class="hide-start">
+
+            <script>
+                // Part 1a: output 12 34 in one line in blue text using .writeln() method
+                document.writeln("<p class=\"blue\">12 34</p>");
+            </script>
+
+            <script>
+                // Part 1b: output 12 34 in 4-5 lines in red text using .write() method
+                document.write("<p class=\"red\">1");
+                document.write("2 ");
+                document.write("3");
+                document.write("4</p>");
+            </script>
+            
+        </div>
+        
+        <h2>Part2</h2>
+        <div id="part-2" class="hide-start">
+            <form name="mathform" id="mathform">
+                <div id="first-number">
+                    <label>First number</label>
+                    <input type="text" maxlength="6" name="num1" id="num1" />
+                </div>
+                <div id="second-number">
+                    <label>Second number</label>
+                    <input type="text" maxlength="6" name="num2" id="num2" />
+                </div>
+                <div id="third-number">
+                    <label>Third number</label>
+                    <input type="text" maxlength="6" name="num3" id="num3" />
+                </div>
+                <div id="result-labelset">
+                    <label>Result</label>
+                    <textarea name="result" id="result"></textarea>
+                </div>
+                <div class="buttons">
+                    <input type="button" value="Submit" onclick="compute()" />
+                    <input type="reset" value="Reset Form" />
+                </div>
+            </form>
+        </div>
+        
+        <h2>Part3</h2>
+        <div id="part-3" class="hide-start">
+            <form name="countform" id="countform">
+                <div id="first-number-2">
+                    <label>First number</label>
+                    <input type="text" maxlength="6" name="int1" id="int1" />
+                </div>
+                <div id="second-number-2">
+                    <label>Second number</label>
+                    <input type="text" maxlength="6" name="int2" id="int2" />
+                </div>
+                <div id="third-number-2">
+                    <label>Third number</label>
+                    <input type="text" maxlength="6" name="int3" id="int3" />
+                </div>
+                <div id="fourth-number-2">
+                    <label>Fourth number</label>
+                    <input type="text" maxlength="6" name="int4" id="int4" />
+                </div>
+                <div id="fifth-number-2">
+                    <label>Fifth number</label>
+                    <input type="text" maxlength="6" name="int5" id="int5" />
+                </div>
+                <div id="result-labelset-2">
+                    <label>Result</label>
+                    <textarea name="result_count" id="result_count"></textarea>
+                </div>
+                <div class="buttons">
+                    <input type="button" value="Submit" onclick="countme()" />
+                    <input type="reset" value="Reset Form" />
+                    <input type="button" value="Click to fade results" onclick="fademe()" />
+                </div>
+            </form>
+        </div>
+        
+        <h2>Part4</h2>
+        <div id="part-4" class="hide-start">
+            <table id="homework">
+
+            </table>
+            <form id="newtable">
+                <input type="button" value="Click to see numbers 7-10" onclick="sevenTen()" />
+            </form>
+            <table id="homework2">
+            </table>
+        </div>
+        
+        <h2>Extra Credit</h2>
+        <div id="extra-credit" class="hide-start">
+            <p id="instruct_click"><u>Click here to show/hide instructions</u></p>
+            <div id="instructions">
+                <p>These foreign exchange rates are current as of June 23, 2010. <br />Enter the US Dollar amount to see a table of conversions in Pounds, Canadian Dollars, Euros, Yen, and Pesos.</p>
+            </div>
+            <form id="convert">
+                <div id="us-input">
+                <label>U.S. Dollars</label>
+                <input type="text" name="usdollars" id="usdollars" />
+                </div>
+                <div class="buttons">
+                    <input type="button" value="Convert" onclick="convertme()" />
+                    <input type="reset" value="Reset" />
+                </div>
+            </form>
+            <table id="convert_table">
+                
+            </table>
+        </div>
+    </article>
+</section>
+
+<footer>
+    <a href="http://validator.w3.org/check?uri=referer"><img src="img/html.png" alt="Validated HTML5" /></a>
+    <a href="http://jigsaw.w3.org/css-validator/check/referer"><img src="img/w3c.png" alt="Validated CSS" /></a>
+</footer>
+
+</body>
+</html>

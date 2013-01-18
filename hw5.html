@@ -1,0 +1,549 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>CNIT 133 - Homework 5: Javascript: Arrays</title>
+
+<link rel="stylesheet" href="reset.css" type="text/css" />
+<link rel="stylesheet" href="style.css" type="text/css" />
+
+<!--[if IE]>
+<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+
+<!-- Initialize JQuery -->
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js"></script>
+
+<script>
+// Wait for the document to load before running these scripts
+$(document).ready(function() {
+   
+   // Start with each part's DIV hidden
+   $('.hide-start').hide();   
+   
+   // Make the cursor turn into a pointer when hing  H2
+   $('h2').css('cursor','pointer');
+   
+   // When the user clicks on an H2, script finds the 'next' div with .hide-start
+   // class and shows or hides it (selects only the div under the H2) 
+   $('h2').click(function() {
+        $(this).next('.hide-start').slideToggle('slow');    
+   });   
+
+   // Put an asterisk in all the label elements of part 1A
+   $("#form_1a label").append('<span class="red">*</span>');
+   
+}); // end document.ready javascripts
+
+// PART 1: Validation
+
+function form_1a_validate() {
+
+    // This variable will flag if the form is invalid
+    var valid = true;
+
+    // This variable contains the error message that will be alerted to the user
+    var error = "";
+
+    // If the text field is empty, add a message to the error variable and make valid false
+    if ( document.form_1a.form_1a_textfield.value == "" ) {
+        error += "You left the text field empty.\n";
+        valid = false;
+    }
+
+    // If the neither radio button is checked, add a message to the error variable and make valid false
+    if ( document.form_1a.political[0].checked == false && document.form_1a.political[1].checked == false ) {
+        error += "You must select one radio button.\n";
+        valid = false;
+    }
+
+    // Create a variable to keep track of how many times the checkbox is left empty
+    var checkboxNull = 0;
+
+    // Check each of the 3 checkboxes and add 1 to the checkboxNull variable for every empty one
+    for ( i=0; i<=2; ++i ) {
+        if ( document.form_1a.pets[i].checked == false ) {
+            ++checkboxNull;
+        }
+    }
+    
+    // If all 3 are empty, add a message to the error variable and make valid false.
+    if ( checkboxNull == 3 ) {
+        error += "You need to check at least one pet box.\n";
+        valid = false;        
+    }
+    
+    // If the selected option is the default option, user did not make a choice. Add error message and make valid false.
+    if ( document.form_1a.favorite_color.selectedIndex == 0 ) {
+        error += "You've got to have at least one favorite color!\n";
+        valid = false;
+    }
+
+    // If the error message contains something, alert what it contains.
+    if ( error != "" ) {
+        alert(error);
+    }
+
+    // Return the value of valid to the form's submit handler.
+    return valid;
+}
+
+function form_1b_destination() {
+    
+    // Define a variable to hold the selected value of the user's choice
+    letsGo = document.form_1b.url_go_onchange[document.form_1b.url_go_onchange.selectedIndex].value;
+
+    // Tell the browser to go there
+    window.location = letsGo;
+}
+
+function form_1b_2_destination() {
+
+    // Test to see if the value selected is the default value (no selection)
+    if ( document.form_1b_2.url_go_onclick.selectedIndex == 0 ) {
+
+        // If so, tell the user to pick one
+        alert("Please choose a value.");
+
+    } else {
+        
+        // If the value is valid, define a variable to hold the selected value
+        letsGo = document.form_1b_2.url_go_onclick[document.form_1b_2.url_go_onclick.selectedIndex].value;
+        
+        // Tell the browser to go there
+        window.location = letsGo;
+    }
+}
+
+// PART 2: States Script
+
+function form_2_state() {
+
+    // Hide Error messages if they are present
+    $('#error-part-2').hide();
+
+    // Create variable for user input and convert it to lowercase so it can be tested against array values
+    var stateInput = document.states_form.state_textfield.value.toLowerCase();
+
+    // Create the array to define the data
+    var stateFields = ["Abbrev", "StateName", "Capital", "Pop"];
+
+    // Enter each state's information, in the same order for each state so that the sub-index becomes that state's ID
+    // e.g., Alabama is the first state's information entered, so it's ID is 0, and corresponds to stateFields[0][0]
+    // for abbrieviation, stateFields[1][0] for name, stateFields[2][0] for capital, stateFields[3][0] for population.
+    stateFields[0] = ["al","ak","az","ar","ca","co"];
+    stateFields[1] = ["alabama","alaska","arizona","arkansas","california","colorado"];
+    stateFields[2] = ["montgomery","juneau","phoenix","little rock","sacramento","denver"];
+    stateFields[3] = ["4,369,862","619,500","4,778,332","2,551,373","3,145,121","4,056,133"];
+
+    // Create a variable to store the number that corresponds to the index of that state's data in each array and
+    // make the default value "nomatch" when no index is found.
+    var stateId = "nomatch";
+
+    // Check that the user entered a value, and if not, alert them.
+    if ( stateInput == '' ) {
+        alert("Please enter a state.");
+    } else {
+
+        // Otherwise, check the user's input against the abbreviation or statename variables 
+        // contained within the arrays and get the state ID when there is a match
+        for ( i=0; i<=6; ++i ) {
+            if ( stateInput == stateFields[0][i] || stateInput == stateFields[1][i]) {
+                stateId = i;
+            }
+        }
+
+        // If the stateId is not "no match" print the state's information in each of the fields
+        if ( stateId != "nomatch" ) {
+            $('#state_name_textfield').val(stateFields[1][stateId]);
+            $('#state_abbrev_textfield').val(stateFields[0][stateId]);
+            $('#state_capital_textfield').val(stateFields[2][stateId]);
+            $('#state_pop_textfield').val(stateFields[3][stateId]);
+            
+        }   else {
+            
+            // If the stateId is "no match" the script found no matches for the user. Return an error.
+            $('#error-part-2').html('You need to enter one of the stored states. Please try again').show();
+        }
+        
+    }
+}
+
+// PART 3: Employee Calculation of Earnings
+
+function create_employee_fields() {
+
+    // Hide error if it's showing
+    $('#error-part-3').hide();
+
+    // Hide submit button if it's showing and hide fields if they're showing
+    $('#form_3_submit').hide();
+    $('#form_3_fieldset2').html('');
+
+    // Define a variable for the user's input of number of employees
+    var numEmp = parseInt(document.employee_range.number_of_employees.value,10);
+
+    // Check that the input is not valid
+    if ( isNaN(numEmp) == true  || numEmp > 100 || numEmp <= 0 ) {
+
+        // If it isn't valid, show error
+        $('#error-part-3').html('You must enter a valid integer between 1-100').show();
+
+    } else {
+
+        // Otherwise, clear fields if there are any, and display the number of fields entered up to 100
+        for ( i=1; i<=numEmp; ++i ) {
+            $('#form_3_fieldset2').append('<label>Employee ' + i + '\'s Gross Sales</label><input type="text" id="employee_' + i + '" /><br />')
+        }
+
+        // Then display the submit button for this new fieldset
+        $('#form_3_submit').show();
+    }
+
+}
+
+function calculate_employees() {
+
+    // Hide error if it's showing
+    $('#error-part-3').html('').hide();
+
+    // Reset all the fields in case they are filled already
+    for ( blank=200; blank <= 1000; blank+=100 ) {
+        $('#range_' + blank ).val('0');
+    }
+
+    // Define a variable for user's input of number of employees
+    var numEmp = parseInt(document.employee_range.number_of_employees.value, 10);
+
+    // Define an array to hold each employee's gross sales
+    var grossSales = new Array();
+
+    // Define an array to hold each employee's earned salaries
+    var earnedSal = new Array();
+
+    // Define an array to hold the values of how many employees in each tier
+    var perTier = new Array();
+
+    // Assign variables to the user input(s) by doing the following for every employee:
+    for ( i=1; i<=numEmp; ++i ) {
+
+        // Assign an item in the grossSales array for the value that was input by the user
+        grossSales[i] = parseInt(document.getElementById('employee_' + i).value, 10);
+
+        // If that input is not a number or less than zero, alert with a message specifying which employee has an error
+        // (This script allows the display of the count of the other employees with valid values in each tier even if
+        //  one of the employee's fields does not contain a valid number.)
+        if ( isNaN(grossSales[i]) == true || grossSales[i] < 0 ) {
+            $('#error-part-3').append('You must enter a valid integer greater than or equal to zero for Employee ' + i + '<br>').show();
+        } else {
+
+            // Otherwise, calculate the earned salary and round it to the nearest integer
+            earnedSal[i] = Math.round(( grossSales[i] * 0.09 ) + 200);
+
+                // Then, run a loop that tests this value against each tier up to 999
+                for ( y=200; y <= 999; y += 100 ) {
+
+                    // If the current tier doesn't exist yet, initialize it with 0
+                    if ( isNaN(perTier[y]) == true ) {
+                            perTier[y] = 0; 
+                    }
+
+                    // If the earned salary is within the current loop's range, add 1 to the current tier and output the value to the field
+                    if ( (earnedSal[i] >= y) && (earnedSal[i] <= (y + 99)) ) { 
+                            ++perTier[y];
+                            $('#range_' + y).val(perTier[y]);
+                    }           
+                } // end for
+
+                // If the earned salary is over 1000, add one to that tier count and output it in the 1000+ textfield
+                if ( earnedSal[i] >= 1000 ) {
+
+                    // Check to see if the perTier[1000] has been initiated, and if not do it to avoid NaN error.
+                    if ( isNaN(perTier[1000]) == true) {
+                        perTier[1000] = 0;
+                    }
+
+                    // Add one to perTier[1000] and output it to the 1000+ textfield
+                    ++perTier[1000];
+                    $('#range_1000').val(perTier[1000]);
+                } // endif 
+            } // end else
+    } // end for
+
+} // end function calculate_employees()
+
+// PART 4: Number Input
+
+
+// Here are some global variables to be used with PART 4
+    // Create a new Array to store all the user's numbers
+    var numberStore = new Array();
+
+    // Create a counter to count the number of user submissions
+    var userCounter = 0;
+
+function number_input_function() {
+   
+    // Hide error messages if any   
+    $('#error-part-4').hide();
+
+    //  Assign a variable for the user's input
+    var numberInput = parseInt(document.getElementById('number_input_textfield').value, 10);
+
+    // Assign a variable to keep track of the length of the array
+    var numberStoreLength = numberStore.length;
+
+    // Assign a variable to test if a user's input already exists
+    var testPoint = 0;
+
+    // Make sure input is a valid integer between 10 and 100, otherwise return an error.
+    if ( isNaN(numberInput) == true || numberInput < 10 || numberInput > 100 ) {
+        $('#error-part-4').html('You need to enter an integer between 10 and 100, inclusive.').show();
+
+    } else {
+
+        // Add 1 to the user counter since this is another try
+        ++userCounter;
+        
+        // If the number matches one already in the array, add 1 to the testPoint count
+        for ( testCount = 0; testCount<= numberStoreLength; ++testCount ) {
+            if (numberInput == numberStore[testCount]) {
+                testPoint = 0;
+                ++testPoint;                
+            } // endif
+        } // end for
+
+        // If no matches were found, testPoint would equal zero and we would add the input to the array
+        if ( testPoint == 0 ) {
+            numberStore.push(numberInput);
+        }
+    }
+
+    // Create a variable to hold the list a printable form
+    var numberList = '';
+
+    // Add each variable in the array to the numberList variable
+    for ( printCount = 0; printCount < numberStore.length; ++printCount ) {
+        numberList += ' ' + numberStore[printCount];
+    }
+
+    // Print the numberList so the user can see the updated list of unique numbers that made it to the array
+    $('#the_numbers').html('<span>' + numberList + '</span>');
+
+    // If userCounter has reached 10 (they've entered 10 valid numbers), disable the input
+    if (userCounter == 10 ) {
+        $('#number_input_textfield').addClass('disabled').prop('disabled', true);
+        $('#number_input_button').prop('disabled', true);
+    }
+
+    // Display a message indicating how many numbers the user has left to enter:
+    $('#the_count').html('<p>You have <strong>' + (10 - userCounter) + '</strong> numbers left you can input.');
+}
+
+function number_input_reset_function() {
+    
+    // Hide error messages if any
+    $('#error-part-4').hide();
+
+    // Clear the number box and enable it if it isn't already enabled
+    $('#number_input_textfield').val('').prop('disabled', false).removeClass('disabled');
+    $('#number_input_button').prop('disabled', false);
+
+    // Empty the array and clear the numbers that have been output so far
+    numberStore.length = 0;
+    $('#the_numbers').html('');
+    $('#the_count').html('');
+
+    // Reset the userCount
+    userCounter = 0;
+
+}
+
+
+</script>
+
+</head>
+<body class="hw-part-5">
+<header>
+    <nav>
+        <ul>
+            <li><a href="index.html">HW1</a></li>
+            <li><a href="hw2.html">HW2</a></li>
+            <li><a href="hw3.html">HW3</a></li>
+            <li><a href="hw4.html">HW4</a></li>
+            <li class="active">HW5</li>
+            <li><a href="hw6.html">HW6</a></li>
+            <li><a href="hw7.html">HW7</a></li>
+            <li><a href="hw8.html">HW8</a></li>
+        </ul>
+    </nav>
+</header>
+
+<section id="body">
+    <h1>CNIT 133 Homework 5 - Arrays</h1>
+    <article>
+        <h2>Part 1</h2>
+        <div id="part-1" class="hide-start part">
+            <h1>Part 1A Form Validation</h1>
+            <p>Required fields are marked with a red <span class="red">*</span></p>
+            <form id="form_1a" name="form_1a" method="post" action="form_complete.html" onsubmit="return form_1a_validate()">
+                <div id="form_1a_fieldset1">
+                    <label>Text Field:</label>
+                    <input type="text" name="form_1a_textfield" />
+                </div>
+                <div id="form_1a_fieldset2">
+                    <label>Radio Buttons:</label>
+                    <input type="radio" name="political" value="Democrat" />Democrat<br />
+                    <input type="radio" name="political" value="Republican" />Republican
+                </div>
+                <div id="form_1a_fieldset3">
+                    <label>Checkboxes:</label>
+                    <input type="checkbox" name="pets" value="dog" />Dog<br />
+                    <input type="checkbox" name="pets" value="cat" />Cat<br />
+                    <input type="checkbox" name="pets" value="dragon" />Dragon
+                </div>
+                <div id="form_1a_fieldset4">
+                    <label>Favorite Color Select Box:</label>
+                    <select name="favorite_color">
+                        <option>Select one</option>
+                        <option value="aqua">Aqua</option>
+                        <option value="red">Red</option>
+                        <option value="blue">Blue</option>
+                        <option value="pink">Pink</option>
+                        <option value="green">Green</option>
+                    </select>
+                </div>
+                <div id="form_1a_submit" class="buttons">
+                    <input type="submit" />
+                    <input type="reset" />
+                </div>
+            </form>
+
+            <h1>Part 1B Form</h1>
+            <form id="form_1b" name="form_1b" method="post">
+                <div id="form_1b_fieldset1">
+                    <label>Select a URL and it will automatically go there.</label>
+                    <select name="url_go_onchange" onchange="form_1b_destination()">
+                        <option>Select one</option>
+                        <option value="http://www.smashingmagazine.com/">Smashing Magazine</option>
+                        <option value="http://www.alistapart.com">A List Apart</option>
+                        <option value="http://www.sitepoint.com">Sitepoint</option>
+                    </select>
+                </div>
+            </form>
+            <form id="form_1b_2" name="form_1b_2" method="post">
+                <div id="form_1b_2_fieldset2">
+                    <label>Select a URL and click go to go to it.</label>
+                    <select name="url_go_onclick">
+                        <option>Select one</option>
+                        <option value="http://www.smashingmagazine.com/">Smashing Magazine</option>
+                        <option value="http://www.alistapart.com">A List Apart</option>
+                        <option value="http://www.sitepoint.com">Sitepoint</option>
+                    </select>
+                </div>
+                <div class="buttons">
+                    <input type="button" value="go!" onclick="form_1b_2_destination()" />
+                </div>
+            </form>
+        </div>
+    </article>
+    <article>
+        <h2>Part 2</h2>
+        <div id="part-2" class="hide-start part">
+            <div id="error-part-2" class="hide-start error"></div>
+            <h1>States</h1>
+            <form name="states_form">
+                <p>Enter the name or abbreviation of the state you want to display information about. You can choose between Alabama, Alaska, Arizona, Arkansas, California, or Colorado. Case doesn't matter.</p>
+                <div id="form_2_fieldset1">
+                    <label>State:</label>
+                    <input type="text" name="state_textfield" id="state_textfield" />
+                </div>
+                <div id="form_2_fieldset2">
+                    <label>State Name:</label>
+                    <input type="text" name="state_name_textfield" id="state_name_textfield" class="disabled" disabled />
+                    <label>State Abbreviation:</label>
+                    <input type="text" name="state_abbrev_textfield" id="state_abbrev_textfield" class="disabled" disabled />
+                    <label>State Capital:</label>
+                    <input type="text" name="state_capital_textfield" id="state_capital_textfield" class="disabled" disabled />
+                    <label>State Population</label>
+                    <input type="text" name="state_pop_textfield" id="state_pop_textfield" class="disabled" disabled />
+                </div>
+                <div id="states_result"></div>
+                <div class="buttons">
+                    <input type="button" value="State Info" name="state_submit" onclick="form_2_state()" />
+                    <input type="reset" />
+                </div>
+            </form>
+        </div>
+    </article>
+    <article>
+        <h2>Part 3</h2>
+        <div id="part-3" class="hide-start part">
+            <div id="error-part-3" class="hide-start error"></div>
+            <h1>Employee Ranges</h1>
+            <form name="employee_range">
+                <p>Enter the number of employees to calculate the number of people earning each salary range (up to 100). Then, enter the number of gross sales for each employee in the new form that appears.</p>
+                <div id="form_3_fieldset1">
+                    <label>Number of employees:</label>
+                    <input type="text" name="number_of_employees" id="number_of_employees" />
+                    <input type="button" value="Create Employee Input Fields" name="number_of_employees_button" onclick="create_employee_fields()" />
+                </div>
+                <div id="form_3_fieldset2"></div>
+                <div id="form_3_submit" class="buttons"><input type="button" value="Calculate!" onclick="calculate_employees()" /></div>
+                <div id="form_3_fieldset3">
+                    <h1>Number of employees who earn in each of the below ranges</h1>
+                    <label>$200-299</label>
+                    <input type="text" name="range_200" id="range_200" value="0" class="disabled" disabled /><br />
+                    <label>$300-399</label>
+                    <input type="text" name="range_300" id="range_300" value="0" class="disabled" disabled /><br />
+                    <label>$400-499</label>
+                    <input type="text" name="range_400" id="range_400" value="0" class="disabled" disabled /><br />
+                    <label>$500-599</label>
+                    <input type="text" name="range_500" id="range_500" value="0" class="disabled" disabled /><br />
+                    <label>$600-699</label>
+                    <input type="text" name="range_600" id="range_600" value="0" class="disabled" disabled /><br />
+                    <label>$700-799</label>
+                    <input type="text" name="range_700" id="range_700" value="0" class="disabled" disabled /><br />
+                    <label>$800-899</label>
+                    <input type="text" name="range_800" id="range_800" value="0" class="disabled" disabled /><br />
+                    <label>$900-999</label>
+                    <input type="text" name="range_900" id="range_900" value="0" class="disabled" disabled /><br />
+                    <label>$1000 and over</label>
+                    <input type="text" name="range_1000" id="range_1000" value="0" class="disabled" disabled />
+                </div>
+            </form>
+        </div>
+    </article>
+    <article>
+        <h2>Part 4</h2>
+        <div id="part-4" class="hide-start part">
+            <div id="error-part-4" class="hide-start error"></div>
+            <h1>Number Input</h1>
+            <form name="number_input">
+                <p>Enter a number between 10 and 100, inclusive. The system will accept up to 10 numbers and only print a new number if it hasn't already been entered.</p>
+                <div id="form4_fieldset1">
+                    <label>Your number:</label>
+                    <input type="text" name="number_input_textfield" id="number_input_textfield" />
+                </div>
+                <div class="buttons">
+                    <input type="button" value="Submit" id="number_input_button" onclick="number_input_function()" />
+                    <input type="button" value="Start Over" id="number_input_reset" onclick="number_input_reset_function()" />
+                </div>
+                <div id="number_output">
+                    <h1>Number Count</h1>
+                    <div id="the_count"></div>
+                    <h1>Number Output</h1>
+                    <div id="the_numbers"></div>
+                </div>
+            </form>
+        </div>
+    </article>
+</section>
+
+<footer>
+    <a href="http://validator.w3.org/check?uri=referer"><img src="img/html.png" alt="Validated HTML5" /></a>
+    <a href="http://jigsaw.w3.org/css-validator/check/referer"><img src="img/w3c.png" alt="Validated CSS" /></a>
+</footer>
+
+</body>
+</html>

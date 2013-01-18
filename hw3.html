@@ -1,0 +1,721 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>CNIT 133 - Homework 3: Javascript: Functions</title>
+
+<link rel="stylesheet" href="reset.css" type="text/css" />
+<link rel="stylesheet" href="style.css" type="text/css" />
+
+<!--[if IE]>
+<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+
+<!-- Initialize JQuery -->
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js"></script>
+
+<script>
+// Wait for the document to load before running these scripts
+$(document).ready(function() {
+   
+   // Start with each part's DIV hidden
+   $('.hide-start').hide();   
+   
+   // Make the cursor turn into a pointer when hovering over H2
+   $('h2').css('cursor','pointer');
+   
+   /* When the user clicks on an H2, script finds the 'next' div with .hide-start
+    * class and shows or hides it (selects only the div under the H2) */
+   $('h2').click(function() {
+        $(this).next('.hide-start').slideToggle('slow');    
+   });   
+   
+    // Hide all error messages
+    $('#error, #error_sales, #error_credit').hide();
+   
+   // PART 2: Calculate Line Item Totals when user focuses out of the fields after inputting a quantity
+        
+    $('#item1_qty').focusout( function() {
+        calculate_quant(theItemOnePrice, "item1_qty", item1_ttl)
+    });
+    $('#item2_qty').focusout( function() {
+        calculate_quant(theItemTwoPrice, "item2_qty", item2_ttl)
+    });
+    $('#item3_qty').focusout( function() {
+        calculate_quant(theItemThreePrice, "item3_qty", item3_ttl)
+    });
+    $('#item4_qty').focusout( function() {
+        calculate_quant(theItemFourPrice, "item4_qty", item4_ttl)
+    });
+
+
+}); // end document.ready javascripts
+
+// PART 1: STUDENT GRADES
+
+function show_final_grades() {
+    // Hide error message if it's showing
+    $('#error').hide();
+    
+    // Declare needed input and result variables
+    var myHwAvg, myMidterm, myFinalExam, myAcr, myFinalAverage, myFinalGrade;
+    
+    // Define the values of the input variables
+    myHwAvg = parseInt(document.getElementById("hw_avg_input").value, 10);
+    myMidterm = parseInt(document.getElementById("midterm_input").value, 10);
+    myFinalExam = parseInt(document.getElementById("finalexam_input").value, 10);
+    myAcr = parseInt(document.getElementById("acr_input").value, 10);
+    
+    // Declare a count variable to keep track of inputs that are out of range or fields that are left blank
+    var outsideRange = 0;
+    
+    // Declare an error message variable to tell the user which number they have to correct
+    var errorMessage = "";
+    
+    // Make sure the inputs are numerals between 0 and 100, or else return an error that describes which box needs to be corrected
+    function check_input(userInput,fieldName) {
+        if (userInput < 0 || userInput > 100) {
+            errorMessage += fieldName + " needs to be a number between 0 and 100<br />";
+            outsideRange++;
+        };
+        if (isNaN(userInput) == true) {
+            errorMessage += "You left " + fieldName + " blank or you entered non-numerals. Make sure you fill in all fields with numbers.<br />";
+            outsideRange++;
+        };
+    };
+    
+    // Perform the check
+    check_input(myHwAvg, 'Homework Average');
+    check_input(myMidterm, 'Midterm Exam Score');
+    check_input(myFinalExam, 'Final Exam Score');
+    check_input(myAcr, 'ACRs');
+    
+    // If there has been an error according to the check, display the error message
+    if (outsideRange > 0) {        
+        $('#error').html(errorMessage);
+        $('#error').show();
+    }
+    
+    // If there has been no errors, perform the calculation
+    else {
+        
+        // Figure out what the final average is according to the formula
+        myFinalAverage = parseInt((.5 * myHwAvg) + (.2 * myMidterm) + (.2 * myFinalExam) + (.1 * myAcr), 10);
+        
+        // Figure out what the letter grade is depending on where the final average falls in the range
+        if (0 <= myFinalAverage && myFinalAverage <= 59) {
+            myFinalGrade = "F";
+        }
+        else if (59 < myFinalAverage && myFinalAverage <= 69) {
+            myFinalGrade = "D";
+        }
+        else if (69 < myFinalAverage && myFinalAverage <= 79) {
+            myFinalGrade = "C";
+        }
+        else if (79 < myFinalAverage && myFinalAverage <= 89) {
+            myFinalGrade = "B";
+        }
+        else if (89 < myFinalAverage && myFinalAverage <= 100) {
+            myFinalGrade = "A";
+        };
+        
+        // Display the Final Average and the Final Grade in the appropriate form fields
+        $('#final_average_result').val(myFinalAverage);
+        $('#final_grade_result').val(myFinalGrade);
+        
+        // If the final grade is an F, display the message that the user needs to retake the class
+        if (myFinalGrade == "F") {
+            $('#error').html('Student must retake the course.')
+            $('#error').show();
+        };
+    };
+    
+};
+
+// PART 2: SALES AND EARNINGS
+
+// Define global variables to set the prices for each item
+var theItemOnePrice, theItemTwoPrice, theItemThreePrice, theItemFourPrice;
+theItemOnePrice = 239.99;
+theItemTwoPrice = 129.75;
+theItemThreePrice = 99.95;
+theItemFourPrice = 350.89;
+
+// Calculates each line item's total price if the Qty field is not left blank, and displays it in the line item total's field
+function calculate_quant(itemNumber, itemQtyID, itemTtlID) {
+    
+    // Assign form field to a variable
+    var myQuant = parseInt(document.getElementById(itemQtyID).value, 10);
+    
+    // Multiple the quantity by item total amount, round to 2 decimals
+    var myTtl = parseFloat(itemNumber * myQuant).toFixed(2);
+    
+    // If the Quantity inputted is not a number, clear the Line Item Total field
+    if (isNaN(myQuant) == true) {
+        $(itemTtlID).val('');
+    } else {
+        // If it is a number, display the multiplied value in the total field
+        $(itemTtlID).val(myTtl);
+    }
+};
+
+function calculate_sales_earnings() {
+    
+    // Assign form fields to variables for quantity
+    var myItem1, myItem2, myItem3, myItem4;
+    myItem1 = parseInt(document.getElementById('item1_qty').value, 10);
+    myItem2 = parseInt(document.getElementById('item2_qty').value, 10);
+    myItem3 = parseInt(document.getElementById('item3_qty').value, 10);
+    myItem4 = parseInt(document.getElementById('item4_qty').value, 10);
+    
+    // If any of the quantity fields are not a number, return an error message and clear the total values in case user has performed a calculation already
+    if ( isNaN(myItem1) == true || isNaN(myItem2) == true || isNaN(myItem3) == true || isNaN(myItem4) == true ) {
+        $('#error-sales').html('You must fill in all the fields with a number.');
+        $('#error-sales').show();
+        $('#total_sales').val('');
+        $('#total_earnings').val('');
+    } else {
+        
+        // Otherwise, calculate the total sales and earnings and display them in the respective fields
+        $('#error-sales').hide();
+        var totalSales = parseFloat((myItem1 * theItemOnePrice) + (myItem2 * theItemTwoPrice) + (myItem3 * theItemThreePrice) + (myItem4 * theItemFourPrice)).toFixed(2);
+        var totalEarnings = parseFloat( 200 + (0.09 * totalSales)).toFixed(2);
+        $('#total_sales').val(totalSales);
+        $('#total_earnings').val(totalEarnings);
+    };
+}
+
+// PART 3: Credit Balance
+
+function calculate_balance_credit() {
+    
+    // Assign variables to the field inputs
+    accountNumber = parseInt(document.getElementById("account_number").value, 10);
+    beginBalance = parseInt(document.getElementById("begin_balance").value, 10);
+    totalCharges = parseInt(document.getElementById("total_charges").value, 10);
+    totalCredits = parseInt(document.getElementById("total_credits").value, 10);
+    allowedCredit = parseInt(document.getElementById("allowed_limit").value, 10);
+    
+    // If the numbers entered are not numbers or blank, return an error and clear the credit_result field
+    if ( isNaN(accountNumber) == true || isNaN(beginBalance) == true || isNaN(totalCharges) == true || isNaN(totalCredits) == true || isNaN(allowedCredit) == true ) {
+        $('#error-credit').html('You must fill in all the fields with a number.');
+        $('#error-credit').show();
+        $('#credit_result').val('');
+    } else {
+        
+        // Otherwise, perform the calculations for new balance and the credit check and display the values; if the user is over, display one message, if the user is at or under, display available credit
+        var newBalance = beginBalance + totalCharges - totalCredits;
+        var creditCheck = allowedCredit - newBalance;
+        if (newBalance > allowedCredit) {
+            $('#credit_result').val('Your new balance is $' + newBalance + '. You have exceeded your credit limit by $' + Math.abs(creditCheck) + '.' );
+        } else {
+            $('#credit_result').val('Your new balance is $' + newBalance + '. Credit available: $' + creditCheck + '.' );
+        }
+    }
+}
+
+// Change the textarea to emulate the look of a terminal
+function hacker_mode() {
+    $('#credit_result').css({'background-color':'#000', 'color':'#fff', 'font-family':'Lucida Console', 'font-size':'1.2em'});
+}
+
+// PART 4: Palindrome Checker
+function palindrome_check() {
+    
+    // Assign field input to a variable
+    var palindromeString = document.getElementById("palindrome_input").value;
+    var palindromeLength = palindromeString.length;
+    var palindromeInput = parseInt(palindromeString, 10);
+    
+    // Validate the input to make sure it's a number and that it's exactly 5 characters and that it doesn't start or end with a zero
+    if ( isNaN(palindromeInput) == true || palindromeLength != 5 || palindromeString.charAt(0) == "0" || palindromeString.charAt(4) == "0" ) {
+        $('#error-palindrome').css({'background-color':'#F1D9D9', 'border':'solid 1px #FF0000'});
+        $('#error-palindrome').html('Make sure you fill in the field with a 5-digit number that does not begin or end with zero.');
+        $('#error-palindrome').show();
+    } else {
+        
+        // If so, check to see if first and last numbers are the same, and second and fourth numbers are the same and show a success if so, error if not.
+        if ( palindromeString.charAt(0) == palindromeString.charAt(4) && palindromeString.charAt(1) == palindromeString.charAt(3) ) {
+            $('#error-palindrome').css({'background-color':'#D5E6BE', 'border':'solid 1px #007236'});
+            $('#error-palindrome').html('You have entered a palindrome!');
+            $('#error-palindrome').show();
+        } else {
+            $('#error-palindrome').css({'background-color':'#F1D9D9', 'border':'solid 1px #FF0000'});
+            $('#error-palindrome').html('Sorry, this isn\'t a palindrome.');
+            $('#error-palindrome').show();
+        }
+    }
+}
+
+// PART 5: Fahrenheit to Celsius and back Conversion
+function fahren_to_celsius() {
+    // Assign variables to the form inputs
+    var fahrenheitInput = parseInt(document.getElementById("fahrenheit_input").value, 10);
+    var celsiusInput = parseInt(document.getElementById("celsius_input").value, 10);
+    
+    // Test to see if there is a value entered for the wrong field or if the right field contains a number; if so, return an error
+    if ( isNaN(celsiusInput) == false || isNaN(fahrenheitInput) == true ) {
+        $('#error-degrees').html('Make sure you have entered a number in the Fahrenheit field, and that the Celsius field is blank.');
+        $('#error-degrees').show();
+        
+    // If all is good, perform the conversion
+    } else {
+        $('#error-degrees').hide();
+        var celsiusConversion = (5 / 9) * (fahrenheitInput - 32);
+        $("#celsius_input").val(celsiusConversion);
+    };
+}
+
+function celsius_to_fahren() {
+    // Assign variables to the form inputs
+    var fahrenheitInput = parseInt(document.getElementById("fahrenheit_input").value, 10);
+    var celsiusInput = parseInt(document.getElementById("celsius_input").value, 10);
+    
+    // Test to see if there is a value entered for the wrong field or if the right field contains a number; if so, return an error
+    if ( isNaN(fahrenheitInput) == false || isNaN(celsiusInput) == true ) {
+        $('#error-degrees').html('Make sure you have entered a number in the Celsius field, and that the Fahrenheit field is blank.');
+        $('#error-degrees').show();
+        
+    // If all is good, perform the conversion
+    } else {
+        $('#error-degrees').hide();
+        var fahrenConversion = ((9 / 5) * celsiusInput) + 32;
+        $("#fahrenheit_input").val(fahrenConversion);
+    };
+}
+
+// PART 6: Number Cruncher Game
+
+// Declare the first and second number variables, and the counts for tries, questions, and points
+
+var theFirstTerm, theSecondTerm;
+var tryCount = 0;
+var questionCount = 0;
+var pointCount = 0;
+
+// Clear the stats if the user wants to start over, hide the amirite button, and provide a link to start a new game.
+function clear_stats() {
+    $('#current-stats').html('Questions: 0, Tries: 0, Points: 0');
+    tryCount = 0;
+    questionCount = 0;
+    pointCount = 0;
+    document.getElementById("amirite").disabled = true;
+    $('#question-box').html('<span class="gamelink" onclick="new_question();">NEW GAME &raquo;</span>');
+    $('#game-feedback').hide();
+}
+
+// Makes the game appear and starts a new question
+function show_game() {
+    $('#start-game').show();
+    $('#start-button').hide();
+    new_question();
+}
+
+// Begins a new round (new question)
+function new_question() {
+    
+    // Clear the value of the input and enable the button if it's disabled
+    $('#math_answer').val('');
+    document.getElementById("amirite").disabled = false;
+    
+    // Randomly generate the first and second term
+    theFirstTerm = Math.floor(Math.random()*10);
+    theSecondTerm = Math.floor(Math.random()*10);
+    
+    // Print the question into the DIV
+    $('#question-box').html(theFirstTerm + ' x ' + theSecondTerm + ' = ');
+    
+    // Add a count to the quesetion
+    questionCount++;
+    
+    // Display the current status
+    $('#current-stats').html('Questions: ' + questionCount + ', Tries: ' + tryCount + ', Points: ' + pointCount);
+}
+
+function math_game() {
+    
+    // Assign variables to the form input
+    var mathAnswer = parseInt(document.getElementById("math_answer").value, 10);
+    
+    // Generate what the correct answer is
+    var correctAnswer = theFirstTerm * theSecondTerm;
+    
+    // If answer is not a number, return an error message
+    if (isNaN(mathAnswer) == true) {
+        $('#game-feedback').css({'background-color':'#F1D9D9', 'border':'solid 1px #FF0000'});        
+        $('#game-feedback').html('Make sure you have entered a number into the box.');
+        $('#game-feedback').show();
+        $('#math_answer').val('');
+
+    } else {
+        // If it is a number, see if it is the right answer
+        if (mathAnswer == correctAnswer ) {
+            
+            // If it is, display a correct message in green and add 1 to the tries and points count; also disable the Amirite button so user can't input accidentally.
+            $('#game-feedback').css({'background-color':'#D5E6BE', 'border':'solid 1px #007236'});
+            $('#game-feedback').html('Correct! You gained a point!');
+            $('#game-feedback').show();
+            document.getElementById("amirite").disabled = true;
+            tryCount++;
+            pointCount++;
+            
+            // Display the status
+            $('#current-stats').html('Questions: ' + questionCount + ', Tries: ' + tryCount + ', Points: ' + pointCount);
+            
+            // Reset the numbers to a random integer so there's no cheating
+            theFirstTerm = Math.floor(Math.random()*10);
+            theSecondTerm = Math.floor(Math.random()*10);
+            
+            // Clear the input
+            $('#math_answer').val('');
+            
+            // replace the math question with a hooray message and a link to get a new question
+            $('#question-box').html('HOORAY! <span class="gamelink" onclick="new_question();">NEXT QUESTION &raquo;</span>');
+        
+        // If the answer is not correct, display a red error and clear the input; add 1 to the try count and display the current status
+        } else {
+            $('#game-feedback').css({'background-color':'#F1D9D9', 'border':'solid 1px #FF0000'});        
+            $('#game-feedback').html('Sorry, your answer wasn\'t correct. Try again.');
+            $('#game-feedback').show();
+            $('#math_answer').val('');
+            tryCount++;
+            $('#current-stats').html('Questions: ' + questionCount + ', Tries: ' + tryCount + ', Points: ' + pointCount);
+        }
+    }
+}
+
+// EXTRA CREDIT: CRAPS
+
+// Declare the variables that make the game play
+var dieRollOne, dieRollTwo, dieRollSum, diePoint, dieResult;
+diePoint = 'zero';
+dieResult = '';    
+
+// When Roll Dice is pressed, this function fires
+function craps_game() {
+    
+    // If there has not been a point assigned, we are assuming we're at the beginning of a game
+    if (diePoint == 'zero') {
+        
+        // The dice are rolling
+        dieRollOne = Math.floor(Math.random()*6) + 1;
+        dieRollTwo = Math.floor(Math.random()*6) + 1;
+        
+        // The sum of the dice are calculated
+        dieRollSum = dieRollOne + dieRollTwo;
+        
+        // if the sum is a 7 or 11, player wins
+        switch(dieRollSum) {
+            case 7:
+            case 11:
+                dieResult = "You rolled a 7 or an 11, so you win!";
+                document.getElementById("roll").disabled = true;
+                print_row();
+                break;
+            
+            // If the sum is 2, 3, 12, player loses
+            case 2:
+            case 3:
+            case 12:
+                dieResult = "You rolled a 2, 3, or 12, so you lose :( Try again!";
+                document.getElementById("roll").disabled = true;
+                print_row();
+                break;
+            
+            // If any other sum, it becomes a point game.
+            case 4:
+            case 5:
+            case 6:
+            case 8:
+            case 9:
+            case 10:
+                diePoint = dieRollSum;
+                dieResult = "It's a point game now. Roll again and try to get a " + diePoint;
+                print_row();
+                break;            
+        }
+    } else {
+        
+        // If this is a point game, the rules change. Roll the dice:
+        dieRollOne = Math.floor(Math.random()*6) + 1;
+        dieRollTwo = Math.floor(Math.random()*6) + 1;
+        
+        // Get the sum:
+        dieRollSum = dieRollOne + dieRollTwo;
+        
+        // If player matches the point, they win. If they get a 7, they lose. If any other, they need to roll again.
+        switch(dieRollSum) {
+            case diePoint:
+                dieResult = "You made your point, so you win!";
+                document.getElementById("roll").disabled = true;
+                print_row();
+                break;
+            case 7:
+                dieResult = "Oh no, a 7! You lose."
+                document.getElementById("roll").disabled = true;
+                print_row();
+                break;
+            default:
+                dieResult = "You have to get a " + diePoint + " to win this game! Roll again.";
+                print_row();
+                break;
+        }
+    }
+}
+
+// Prints each body row with the results of each toss
+function print_row() {
+    document.getElementById("rolldata").innerHTML += ("<tr class=\"bodyrow\"><td>" + dieRollOne + "</td><td>" + dieRollTwo + "</td><td>" + dieRollSum + "</td><td>" + diePoint + "</td><td>" + dieResult + "</td></tr>");    
+}
+
+// Resets the game by removing body rows, allowing the Roll Dice button if it's disabled, and resetting the Point and Results value.
+function craps_reset() {
+    document.getElementById("roll").disabled = false;
+    $('#part-7 .bodyrow').remove();
+    diePoint = 'zero';
+    dieResult = '';
+}
+
+</script>
+
+</head>
+<body>
+<header>
+    <nav>
+        <ul>
+            <li><a href="index.html">HW1</a></li>
+            <li><a href="hw2.html">HW2</a></li>
+            <li class="active">HW3</li>
+            <li><a href="hw4.html">HW4</a></li>
+            <li><a href="hw5.html">HW5</a></li>
+            <li><a href="hw6.html">HW6</a></li>
+            <li><a href="hw7.html">HW7</a></li>
+            <li><a href="hw8.html">HW8</a></li>
+        </ul>
+    </nav>
+</header>
+
+<section id="body">
+    <h1>CNIT 133 Homework 3 - Functions</h1>
+    <article>
+        <h2>Part1</h2>
+        <div id="part-1" class="hide-start part">
+            <div id="error" class="hide-start error"></div>
+            <h1>Student Grades</h1>
+            <h2 class="show-hide-instructions">Click to Show/Hide Instructions</h2>
+            <div class="hide-start">
+                <p id="instructions">The following webpage contains the heading, Student Grades, and uses a script that inputs a student's homework average, mid-term exam score, final exam score, and ACR (all as integers)</p>
+            </div>
+            <form name="student_grades" id="student_grades">
+                <div id="hw-avg">
+                    <label>Homework Average</label>
+                    <input type="text" maxlength="5" name="hw_avg_input" id="hw_avg_input" />
+                </div>
+                <div id="midterm-score">
+                    <label>Midterm Exam Score</label>
+                    <input type="text" maxlength="5" name="midterm_input" id="midterm_input" />
+                </div>
+                <div id="final-exam-score">
+                    <label>Final Exam Score</label>
+                    <input type="text" maxlength="5" name="finalexam_input" id="finalexam_input" />
+                </div>
+                <div id="acr-avg">
+                    <label>ACRs</label>
+                    <input type="text" maxlength="5" name="acr_input" id="acr_input" />
+                </div>
+                <div id="final-average">
+                    <label><strong>Final Average</strong></label>
+                    <input type="text" maxlength="5" name="final_average_result" id="final_average_result" class="disabled" disabled />
+                </div>
+                <div id="final-grade">
+                    <label><strong>Final Grade</strong></label>
+                    <input type="text" maxlength="5" name="final_grade_result" id="final_grade_result" class="disabled" disabled />
+                </div>
+                <div class="buttons">
+                    <input type="button" value="Submit" onclick="show_final_grades()" />
+                    <input type="reset" value="Reset Form" />
+                </div>
+            </form>
+        </div>
+        <h2>Part 2</h2>
+        <div id="part-2" class="hide-start part">
+            <div id="error-sales" class="hide-start error"></div>
+            <h1>Sales and Earnings Calculator</h1>
+            <form name="sales_form" id="sales_form">
+                <table id="sales_form_table">
+                    <tr class="header">
+                        <td>Item number</td>
+                        <td>Item Price</td>
+                        <td>Quantity Sold</td>
+                        <td>Line Item Total</td>   
+                    </tr>
+                    <tr class="bodyrow">
+                        <td>Item 1</td>
+                        <td>$239.99</td>
+                        <td><input type="text" maxlength="5" name="item1_qty" id="item1_qty" class="focusout-fire" /></td>
+                        <td><input type="text" maxlength="5" name="item1_ttl" id="item1_ttl" class="disabled" disabled /></td>
+                    </tr>
+                    <tr class="bodyrow">
+                        <td>Item 2</td>
+                        <td>$129.75</td>
+                        <td><input type="text" maxlength="5" name="item2_qty" id="item2_qty" class="focusout-fire" /></td>
+                        <td><input type="text" maxlength="5" name="item2_ttl" id="item2_ttl" class="disabled" disabled /></td>
+                    </tr>
+                    <tr class="bodyrow">
+                        <td>Item 3</td>
+                        <td>$99.95</td>
+                        <td><input type="text" maxlength="5" name="item3_qty" id="item3_qty" class="focusout-fire" /></td>
+                        <td><input type="text" maxlength="5" name="item3_ttl" id="item3_ttl" class="disabled" disabled /></td>
+                    </tr>
+                    <tr class="bodyrow">
+                        <td>Item 4</td>
+                        <td>$350.89</td>
+                        <td><input type="text" maxlength="5" name="item4_qty" id="item4_qty" class="focusout-fire" /></td>
+                        <td><input type="text" maxlength="5" name="item4_ttl" id="item4_ttl" class="disabled" disabled /></td>
+                    </tr>
+                    <tr class="bodyrow total">
+                        <td colspan="3" class="label">Total Sales</td>
+                        <td><input type="text" maxlength="5" name="total_sales" id="total_sales" class="disabled" disabled /></td>
+                    </tr>
+                    <tr class="bodyrow total">
+                        <td colspan="3" class="label">Total Earnings</td>
+                        <td><input type="text" maxlength="5" name="total_earnings" id="total_earnings" class="disabled" disabled /></td>
+                    </tr>
+                </table>
+                <div class="buttons">
+                    <input type="button" value="Calculate Total Sales and Earnings" onclick="calculate_sales_earnings()" />
+                    <input type="reset" value="Reset Form" />
+                </div>
+
+            </form>
+        </div>
+        <h2>Part 3</h2>
+        <div id="part-3" class="hide-start part">
+            <div id="error-credit" class="hide-start error"></div>
+            <h1>Credit Limit Calculator</h1>
+            <form name="credit_limit_calculator" id="credit_limit_calculator">
+                <div id="account-number">
+                    <label>Account Number</label>
+                    <input type="text" maxlength="30" name="account_number" id="account_number" />
+                </div>
+                    <div id="begin-balance">
+                    <label>Balance at the Beginning of the Month</label>
+                    <input type="text" maxlength="5" name="begin_balance" id="begin_balance" />
+                </div>
+                <div id="total-charges">
+                    <label>Total of Items Charged This Month</label>
+                    <input type="text" maxlength="5" name="total_charges" id="total_charges" />
+                </div>
+                <div id="total-credits">
+                    <label>Total Credits Applied This Month</label>
+                    <input type="text" maxlength="5" name="total_credits" id="total_credits" />
+                </div>
+                <div id="allowed-limit">
+                    <label>Allowed Credit Limit</label>
+                    <input type="text" maxlength="5" name="allowed_limit" id="allowed_limit" />
+                </div>
+                <div class="buttons">
+                    <input type="button" value="Calculate New Balance and Credit Available" onclick="calculate_balance_credit()" />
+                    <input type="reset" value="Reset Form" />
+                </div>
+                <div id="credit-result">
+                    <textarea name="credit_result" id="credit_result" class="disabled" disabled></textarea>
+                </div>
+                <div class="buttons">
+                    <input type="button" value="Click to enter Terminal Mode" onClick="hacker_mode()" />
+                </div>
+            </form>
+        </div>
+        <h2>Part 4</h2>
+        <div id="part-4" class="hide-start part">
+            <div id="error-palindrome" class="hide-start error"></div>
+            <h1>Palindrome Checker</h1>
+            <form name="palindrome_checker" id="palindrome_checker">
+                <div id="palindrome">
+                    <label>Enter a 5-digit number</label>
+                    <input type="text" maxlength="5" name="palindrome_input" id="palindrome_input" />
+                </div>
+                <div class="buttons">
+                    <input type="button" value="Check to see if number is a palindrome" onClick="palindrome_check()" />
+                    <input type="reset" value="Reset Form" />
+                </div>
+            </form>
+        </div>
+        <h2>Part 5</h2>
+        <div id="part-5" class="hide-start part">
+            <div id="error-degrees" class="hide-start error"></div>
+            <h1>Temperature Converter</h1>
+            <form name="temperature_converter" id="temperature_converter">
+                <p>Enter the known value and click one of the buttons to convert it.</p>
+                <div id="fahrenheight">
+                    <label>Fahrenheit</label>
+                    <input type="text" maxlength="5" name="fahrenheit_input" id="fahrenheit_input" />
+                </div>
+                <div id="celsius">
+                    <label>Celsius</label>
+                    <input type="text" maxlength="5" name="celsius_input" id="celsius_input" />
+                </div>
+                <div class="buttons">
+                    <input type="button" value="Convert Fahrenheit to Celsius" onClick="fahren_to_celsius()" />
+                    <input type="button" value="Convert Celsius to Fahrenheit" onClick="celsius_to_fahren()" />
+                    <input type="reset" value="Reset Form" />
+                </div>
+            </form>
+        </div>
+        <h2>Part 6</h2>
+        <div id="part-6" class="hide-start part">
+            <div id="game-feedback" class="hide-start error"></div>
+            <h1>Number Cruncher Game</h1>
+            <p>This is a fun game that helps you improve your math skills! Click the "Start!" button to begin. Enter your answer in the box and click the "Amirite?" button to see if your answer is correct. If it is, you get a point! If it isn't, try again.</p>
+            <form name="math_form" id="math_form">
+                <div id="start-button" class="buttons">
+                    <input type="button" value="Start!" onclick="show_game()" />
+                </div>
+                <div id="start-game" class="hide-start">
+                    <div id="stats-box">
+                        <h1>Your Current Stats:</h1>
+                        <p id="current-stats">Questions: 0, Tries: 0, Points: 0</p>
+                    </div>
+                    <div id="question-box">
+                    </div>
+                    <div id="math-answer">
+                        <input type="text" maxlength="10" name="math_answer" id="math_answer" />
+                    </div>
+                    <div class="buttons">
+                        <input type="button" id="amirite" value="Amirite?" onclick="math_game()" /><br />
+                        <input type="button" value="Reset My Stats" onclick="clear_stats()" /><br />
+                    </div>
+                </div>
+            </form>
+        </div>
+        <h2>Extra Credit</h2>
+        <div id="part-7" class="hide-start part">
+            <h1>The Game of Craps</h1>
+            <p>A player rolls two dice. Each die has six faces containing 1, 2, 3, 4, 5, and 6 spots, respectively. After the dice have come to rest, the sum of the spots on the two upward faces is calculated. <br /><br />If the sum is 7 or 11 on the first throw, the player wins. If the sum is 2, 3, or 12 on the first throw (called "craps"), the player loses (that is, the "house" wins). <br /><br />If the sum is 4, 5, 6, 8, 9, or 10 on the first throw, that sum becomes the player's "point". To win, you must continue rolling the dice until you "make your point" (that is roll your point value). The player loses by rolling a 7 before making the point. </p>
+            <form name="craps" id="craps">
+                <div class="buttons">
+                    <input type="button" id="roll" value="Roll the dice" onclick="craps_game()" /><br />
+                    <input type="button" id="newgame" value="New Game" onclick="craps_reset()" />
+                </div>
+            </form>
+            <table id="rolldata">
+                <tr class="header">
+                    <td>Die 1</td>
+                    <td>Die 2</td>
+                    <td>Sum</td>
+                    <td>Point</td>
+                    <td>Result</td>
+                </tr>
+                
+            </table>
+        </div>
+    </article>
+</section>
+
+<footer>
+    <a href="http://validator.w3.org/check?uri=referer"><img src="img/html.png" alt="Validated HTML5" /></a>
+    <a href="http://jigsaw.w3.org/css-validator/check/referer"><img src="img/w3c.png" alt="Validated CSS" /></a>
+</footer>
+
+</body>
+</html>
